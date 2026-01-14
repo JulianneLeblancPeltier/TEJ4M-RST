@@ -6,12 +6,24 @@ Created on: January 14
 This program runs Tetris on the PyBadge
 """
 
+import stage
+import ugame
+
 def main_menu_scene() -> None:
     """
     This function is the main menu scene
     """
 
-    print("Hello, World!")
+    # image banks for Circuit Python
+    image_bank_background = stage.Bank.from_bmp16("black-pixel-background.bmp")
+
+    background = stage.Grid(image_bank_background, 10, 8)
+    
+    game = stage.Stage(ugame.display, 60)
+
+    game.layers = [background]
+
+    game.render_block()
 
     # repeat forever, game loop
     while True:
