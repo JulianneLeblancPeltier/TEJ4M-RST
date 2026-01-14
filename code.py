@@ -15,9 +15,9 @@ def main_menu_scene() -> None:
     """
 
     # image banks for Circuit Python
-    image_bank_background = stage.Bank.from_bmp16("black-pixel-background.bmp")
+    image_bank_background = stage.Bank.from_bmp16("space_aliens_background.bmp")
 
-    background = stage.Grid(image_bank_background, 10, 8)
+    background = stage.Grid(image_bank_background, 10, 6)
     
     game = stage.Stage(ugame.display, 60)
 
