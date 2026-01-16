@@ -19,6 +19,13 @@ def main_menu_scene() -> None:
     #   Makes sure that the movement buttons aren't overly sensitive! (must CLICK each time to move)
     active_button = False
 
+    # This counter collects the iteration of the loop.
+    #   Makes sure that once a second (60 ticks) the tetris block moves down by 1 block!
+    game_loop_counter = 0
+
+    # This is the conversion number for the amount of bits is 1 block/tile
+    one_block = 16
+
     # image banks for Circuit Python
     image_bank_background = stage.Bank.from_bmp16("/assets/tetris_background1.bmp")
     image_bank_sprites = stage.Bank.from_bmp16("/assets/tetris_sprites.bmp")
@@ -47,6 +54,7 @@ def main_menu_scene() -> None:
         # get user input
         keys = ugame.buttons.get_pressed()
 
+        # update game logic
         if keys & ugame.K_X:
             print("A")
         elif keys & ugame.K_O:
@@ -57,24 +65,39 @@ def main_menu_scene() -> None:
             print("Select")
         elif keys & ugame.K_RIGHT:
             if active_button == False:
-                tetris_block.move(tetris_block.x + 16, tetris_block.y)
+                # rotates the block 90 degrees clockwise
+                tetris_block.set_frame(None, 90)
                 active_button = True
         elif keys & ugame.K_LEFT:
             if active_button == False:
-                tetris_block.move(tetris_block.x - 16, tetris_block.y)
+                tetris_block.move(tetris_block.x - one_block, tetris_block.y)
                 active_button = True
         elif keys & ugame.K_UP:
             if active_button == False:
-                tetris_block.move(tetris_block.x, tetris_block.y - 16)
+                tetris_block.move(tetris_block.x, tetris_block.y - one_block)
                 active_button = True
         elif keys & ugame.K_DOWN:
             if active_button == False:
-                tetris_block.move(tetris_block.x, tetris_block.y + 16)
+                tetris_block.move(tetris_block.x, tetris_block.y + one_block)
                 active_button = True
         else:
             active_button = False
 
-        # update game logic
+        # every 60 ticks (1 second), the sprite moves down one block (16 bits).
+        if game_loop_counter % 60 == 0:
+            tetris_block.move(tetris_block.x - 16, tetris_block.y)
+
+        if tetris_block.x > 144:
+            tetris_block.move(144, tetris_block.y)
+        if tetris_block.x < 0:
+            tetris_block.move(0, tetris_block.y)
+        if tetris_block.y > 112:
+            tetris_block.move(tetris_block.x, 112)
+        if tetris_block.y < 0:
+            tetris_block.move(tetris_block.x, 0)
+
+        # counts the iteration of the loop
+        game_loop_counter += 1
 
         # redraw Sprite
         game.render_sprites([tetris_block])
