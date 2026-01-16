@@ -15,9 +15,11 @@ def main_menu_scene() -> None:
     """
 
     # image banks for Circuit Python
-    image_bank_background = stage.Bank.from_bmp16("space_aliens_background.bmp")
+    image_bank_background = stage.Bank.from_bmp16("/assets/tetris_background1.bmp")
 
-    background = stage.Grid(image_bank_background, 10, 6)
+    # set the background image to image on pybadge
+    # and the size (10x8 tiles of size 16x16)
+    background = stage.Grid(image_bank_background, 10, 8)
     
     game = stage.Stage(ugame.display, 60)
 
