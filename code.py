@@ -3,12 +3,13 @@
 """
 Created by: Julianne Leblanc-Peltier
 Created on: January 14
-This program runs Tetris on the PyBadge
+This program runs Tetris on the PyBadge using CircuitPython
 """
 
 import stage
 import ugame
 import time
+import constants
 
 def main_menu_scene() -> None:
     """
@@ -23,9 +24,6 @@ def main_menu_scene() -> None:
     #   Makes sure that once a second (60 ticks) the tetris block moves down by 1 block!
     game_loop_counter = 0
 
-    # This is the conversion number for the amount of bits is 1 block/tile
-    one_block = 16
-
     # image banks for Circuit Python
     image_bank_background = stage.Bank.from_bmp16("/assets/tetris_background1.bmp")
     image_bank_sprites = stage.Bank.from_bmp16("/assets/tetris_sprites.bmp")
@@ -35,12 +33,12 @@ def main_menu_scene() -> None:
     background = stage.Grid(image_bank_background, 10, 8)
 
     # a sprite that wil be updated every frame
-    # 1 = the index of the sprite in the bank, 75 = x axis, 66 = y axis
+    # 1 = the index of the sprite in the bank, 144 = x axis, 0 = y axis
     tetris_block = stage.Sprite(image_bank_sprites, 1, 144, 0)
     
     # create a stage for the background to show up on
     #    and the size (10x8 tiles of size 16x16)
-    game = stage.Stage(ugame.display, 60)
+    game = stage.Stage(ugame.display, constants.FPS)
 
     # set the layers of all sprites, items show up in order
     game.layers = [tetris_block] + [background]
@@ -70,15 +68,15 @@ def main_menu_scene() -> None:
                 active_button = True
         elif keys & ugame.K_LEFT:
             if active_button == False:
-                tetris_block.move(tetris_block.x - one_block, tetris_block.y)
+                tetris_block.move(tetris_block.x - constants.ONE_BLOCK, tetris_block.y)
                 active_button = True
         elif keys & ugame.K_UP:
             if active_button == False:
-                tetris_block.move(tetris_block.x, tetris_block.y - one_block)
+                tetris_block.move(tetris_block.x, tetris_block.y - constants.ONE_BLOCK)
                 active_button = True
         elif keys & ugame.K_DOWN:
             if active_button == False:
-                tetris_block.move(tetris_block.x, tetris_block.y + one_block)
+                tetris_block.move(tetris_block.x, tetris_block.y + constants.ONE_BLOCK)
                 active_button = True
         else:
             active_button = False
